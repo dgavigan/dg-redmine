@@ -1,0 +1,19 @@
+{
+  "name": "dg-redmine",
+  "version": "1.0.0",
+  "description": "An AngularJS wrapper for the Redmine REST API",
+  "main": "dgRedmine.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0"
+  },
+  "devDependencies": {
+    "del": "^2.2.0",
+    "run-sequence": "^1.1.5"
+  }
+}

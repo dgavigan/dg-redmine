@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>dgRedmine Demo</title>
+	</head>
+	<body ng-app="demo">
+		<div ng-controller='myCtrl'>
+
+			<div>
+				<button ng-click="displayHost()">Display Host</button>
+
+			</div>
+
+
+			<div>
+				
+				<input placeholder="username" ng-model="user.username"/>
+				<input placeholder="password" type="password" ng-model="user.password"/>
+				<button ng-click="login()">Login</button>
+
+
+			{{data}}
+			</div>
+
+
+			<div>
+				<input placeholder="project" ng-model="wiki.project"/>
+				<input placeholder="title" ng-model="wiki.title"/>
+				<button ng-click="fetchWiki()">Get Wiki</button>
+
+				{{wikiContent.wiki_page.title}}
+				<br>
+
+				{{wikiContent.wiki_page.text}}
+
+			</div>
+
+
+			<div>
+				<input placeholder="project" ng-model="wiki.project"/>
+				<button ng-click="fetchListings()">Get Wikis</button>
+
+				{{wikiListings}}
+				
+
+			</div>
+
+
+
+
+
+
+		</div>
+
+
+		<script src="bower_components/angular/angular.js"></script>
+		
+		<script src="../dist/dg-redmine.js"></script>
+
+		<script src="app.js"></script>
+	</body>
+</html>

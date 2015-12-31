@@ -1,0 +1,22 @@
+{
+  "name": "dg-redmine",
+  "description": "An AngularJS wrapper for the Redmine REST API",
+  "main": "dg-redmine.js",
+  "authors": [
+    "Dave Gavigan <davegavigan@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/dg1202/dg-redmine",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-localforage": "~1.2.5"
+  }
+}

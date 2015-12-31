@@ -12,7 +12,7 @@ gulp.task('build', [], function(){
 	return gulp.src([
 		'./bower_components/localforage/dist/localforage.js',
 		'./bower_components/angular-localforage/dist/angular-localForage.js',
-		'src/dgRedmine.js'])
+		'./src/dg-redmine.js'])
 		.pipe(concat('dg-redmine.js'))
 		.pipe(gulp.dest('./dist/'));
 })

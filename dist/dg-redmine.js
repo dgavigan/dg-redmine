@@ -3293,7 +3293,7 @@ angular.module('dgRedmine').provider('redmine', [
 				}
 
 				this.logout = function(){
-					var deferred = $q.defer;
+					var deferred = $q.defer();
 
 					$localForage.removeItem('sisupport')
 						.then(function(){

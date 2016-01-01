@@ -108,7 +108,7 @@ angular.module('dgRedmine').provider('redmine', [
 
 					$localForage.removeItem('sisupport')
 						.then(function(){
-							deferred.resolve():
+							deferred.resolve();
 						},function(){
 							deferred.reject('No user found');
 						})

@@ -103,6 +103,19 @@ angular.module('dgRedmine').provider('redmine', [
 					return deferred.promise
 				}
 
+				this.logout = function(){
+					var deferred = $q.defer;
+
+					$localForage.removeItem('sisupport')
+						.then(function(){
+							deferred.resolve():
+						},function(){
+							deferred.reject('No user found');
+						})
+
+					return deferred.promise
+				}
+
 
 				this.wikiList = function(project){
 					var path  = 'projects/'+project+'/wiki/index';

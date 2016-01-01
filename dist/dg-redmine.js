@@ -3206,7 +3206,6 @@ angular.module('dgRedmine').provider('redmine', [
 
 	            var deferred = $q.defer();
 
-	            var _url = self.host;
 
 	            if(self.useJson){
 	            	path = path+".json";
@@ -3215,36 +3214,46 @@ angular.module('dgRedmine').provider('redmine', [
 	            }
 
 
-	           	/* Appends the users redmine api key to new or existing headers
-	           	to avoid sending username/password on every call. 
-	           	if(!headers){
-                    headers = {'X-Redmine-API-Key': currentUser.tenantId}
-                }else{
-                    headers['X-Redmine-API-Key'] = currentUser.tenantId;    
-                }*/
-	            
+	            $localForage.getItem('sisupport')
+	            	.then(function(data){
+	            		var user = data.user;
 
-	           	var fullpath = 'http://'+ _url +'/'+ path;
+	            		/* Appends the users redmine api key to new or existing headers
+			           	to avoid sending username/password on every call.*/
+			           	if(!headers){
+		                    headers = {'X-Redmine-API-Key': user.api_key}
+		                }else{
+		                    headers['X-Redmine-API-Key'] = user.api_key;    
+		                }
 
-	            //query string vs post with payload
-	            if(typeof(data) == 'string' && method !='POST'){
-	                params = data;
-	                data = null;
-	                fullpath = fullpath+params;
-	            }
-	                $http({
-	                    method: String(method),
-	                    url: String(fullpath),
-	                    data: data,
-	                    headers: headers
-	                }).success(function(data, status, headers, config){
-	                    deferred.resolve(data, status, headers, config);
-	                }).error(function(err){
-	                    $log.error(err);
-	               
-	                    deferred.reject(err);
-	                });
+						var fullpath = 'http://'+ self.host +'/'+ path;
 
+			            //query string vs post with payload
+			            if(typeof(data) == 'string' && method !='POST'){
+			                params = data;
+			                data = null;
+			                fullpath = fullpath+params;
+			            }
+			                
+			            $http({
+			                method: String(method),
+			                url: String(fullpath),
+			                data: data,
+			                headers: headers
+			            }).success(function(data, status, headers, config){
+			                deferred.resolve(data, status, headers, config);
+			            }).error(function(err){
+			               $log.error(err);
+			             
+			                deferred.reject(err);
+			            });
+
+	            	}, function(err){
+	            		$log.error(err);
+	            		deferred.reject('No user logged in ');
+	            	})
+
+	 
 	            return deferred.promise;
 	        }
 

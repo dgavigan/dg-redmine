@@ -3296,7 +3296,10 @@ angular.module('dgRedmine').provider('redmine', [
 				}
 
 
-
+				this.newIssue=function (project, payload){
+                    var path = 'projects/'+project+'/issues';
+                    return getPromise('POST',path,payload);
+                }
 
 			}
 

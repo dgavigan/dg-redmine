@@ -107,7 +107,10 @@ angular.module('dgRedmine').provider('redmine', [
 				}
 
 
-
+				this.createIssue=function (project, payload){
+                    var path = 'projects/'+project+'/issues';
+                    return getPromise('POST',path,payload);
+                }
 
 			}
 

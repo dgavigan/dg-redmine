@@ -16,7 +16,7 @@ dg-redmine uses [angular-local-forage](https://github.com/ocombe/angular-localFo
 * Add dg-redmine module into your application
 
 ```javascript
-angular.module('yourModule', ['dgRedmin']);
+angular.module('yourModule', ['dgRedmine']);
 ```
 
   

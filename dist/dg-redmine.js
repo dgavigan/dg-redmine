@@ -13,7 +13,7 @@ angular.module('dgRedmine').provider('redmine', [
 		self.$get = ['$http', '$q', '$log', '$localForage', function($http, $q, $log, $localForage){
 
 			/* A common $http interface for all services pass through */
-	        function getPromise(method, path, data, params, headers){
+	        function getPromise(method, path, payload, params, headers){
 
 	            var deferred = $q.defer();
 
@@ -40,8 +40,8 @@ angular.module('dgRedmine').provider('redmine', [
 						var fullpath = 'http://'+ self.host +'/'+ path;
 
 			            //query string vs post with payload
-			            if(typeof(data) == 'string' && method !='POST'){
-			                params = data;
+			            if(typeof(payload) == 'string' && method !='POST'){
+			                params = payload;
 			                data = null;
 			                fullpath = fullpath+params;
 			            }
@@ -49,7 +49,7 @@ angular.module('dgRedmine').provider('redmine', [
 			            $http({
 			                method: String(method),
 			                url: String(fullpath),
-			                data: data,
+			                data: payload,
 			                headers: headers
 			            }).success(function(data, status, headers, config){
 			                deferred.resolve(data, status, headers, config);

@@ -8,6 +8,7 @@ angular.module('dgRedmine').provider('redmine', [
 		var self = this;
 
 		self.host = "localhost";
+		self.Crosshost="https://crossorigin.me/";
 		self.useJson = true;
 
 		self.defaultCredentials={
@@ -33,7 +34,8 @@ angular.module('dgRedmine').provider('redmine', [
 				$localForage.getItem('sisupport')
 					.then(function(data){
 						var user = data.user;
-
+						console.clear();
+						console.log("firstname::"+user.firstname);
 						/* Appends the users redmine api key to new or existing headers
 						 to avoid sending username/password on every call.*/
 						if(!headers){
@@ -90,7 +92,7 @@ angular.module('dgRedmine').provider('redmine', [
 					var deferred = $q.defer();
 
 					var path = 'users/current.json';
-					var url = "http://"+username+":"+password+"@"+self.host+"/"+path;
+					var url = self.Crosshost+"http://"+username+":"+password+"@"+self.host+"/"+path;
 
 					$http.get(url)
 						.then(function(res){

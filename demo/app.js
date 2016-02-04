@@ -1,7 +1,7 @@
 var app = angular.module('demo', ['dgRedmine']);
 
 app.config(function(redmineProvider){
-	redmineProvider.host = "redmine.sensorinsight.io";
+	redmineProvider.host = "YOUR_REDMINE_HOST_HERE";
 });
 
 app.controller('myCtrl', function($scope, redmine){

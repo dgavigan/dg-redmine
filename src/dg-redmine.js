@@ -9,7 +9,8 @@ angular.module('dgRedmine').provider('redmine', [
 
 		self.host = "localhost";
 		self.useJson = true;
-
+        
+        //set default credentials for your redmine application
 		self.defaultCredentials={
 			username:"",
 			password:""
@@ -29,40 +30,70 @@ angular.module('dgRedmine').provider('redmine', [
 					path = path+".xml";
 				}
 
+                function processRequest(_user){
+                    /* Appends the users redmine api key to new or existing headers
+                    to avoid sending username/password on every call.*/
+                            if(!headers){
+                                headers = {'X-Redmine-API-Key': _user.api_key}
+                            }else{
+                                headers['X-Redmine-API-Key'] = _user.api_key;
+                            }
 
-				$localForage.getItem('sisupport')
+                            var fullpath = 'http://'+ self.host +'/'+ path;
+
+                            //query string vs post with payload
+                            if(typeof(payload) == 'string' && method !='POST'){
+                                params = payload;
+                                data = null;
+                                fullpath = fullpath+params;
+                            }
+
+                            $http({
+                                method: String(method),
+                                url: String(fullpath),
+                                data: payload,
+                                headers: headers
+                            }).success(function(data, status, headers, config){
+                                deferred.resolve(data, status, headers, config);
+                            }).error(function(err){
+                                $log.error(err);
+
+                                deferred.reject(err);
+                            });
+                }
+                   
+                //fetches user to append api-key as header for the request
+				$localForage.getItem('redmineUser')
 					.then(function(data){
-						var user = data.user;
-
-						/* Appends the users redmine api key to new or existing headers
-						 to avoid sending username/password on every call.*/
-						if(!headers){
-							headers = {'X-Redmine-API-Key': user.api_key}
-						}else{
-							headers['X-Redmine-API-Key'] = user.api_key;
-						}
-
-						var fullpath = 'http://'+ self.host +'/'+ path;
-
-						//query string vs post with payload
-						if(typeof(payload) == 'string' && method !='POST'){
-							params = payload;
-							data = null;
-							fullpath = fullpath+params;
-						}
-
-						$http({
-							method: String(method),
-							url: String(fullpath),
-							data: payload,
-							headers: headers
-						}).success(function(data, status, headers, config){
-							deferred.resolve(data, status, headers, config);
-						}).error(function(err){
-							$log.error(err);
-
-							deferred.reject(err);
-						});
+						var user = null;
+                       
+                        try{
+                            user = data.user
+                            processRequest(user);
+                        
+                        }catch(err){
+                            /*request failed because it tried to fetch before authorization
+                            * most likely because the user navigated straight to a page oppose to hitting 
+                            * the welcome site first
+                            */
+                            
+                            var rm = new redmine;
+                            $log.debug(rm.getDefaultCredentials());
+                            
+                            var _u = rm.getDefaultCredentials();
+                            
+                            rm.login(_u.username, _u.password)
+                                .then(function(){
+                                    $localForage.getItem('redmineUser')
+                                        .then(function(newUser){
+                                             processRequest(newUser);
+                                        })
+                                   
+                                }, function(err){
+                                    deferred.reject(err);
+                                })
+                        }
+						
 
 					}, function(err){
 						$log.error(err);
@@ -94,7 +125,7 @@ angular.module('dgRedmine').provider('redmine', [
 
 					$http.get(url)
 						.then(function(res){
-							$localForage.setItem('sisupport', res.data)
+							$localForage.setItem('redmineUser', res.data)
 								.then(function(){
 									deferred.resolve(res.data);
 								},function(err){
@@ -112,7 +143,7 @@ angular.module('dgRedmine').provider('redmine', [
 				this.logout = function(){
 					var deferred = $q.defer();
 
-					$localForage.removeItem('sisupport')
+					$localForage.removeItem('redmineUser')
 						.then(function(){
 							deferred.resolve();
 						},function(){

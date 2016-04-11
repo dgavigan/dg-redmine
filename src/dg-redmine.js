@@ -30,7 +30,7 @@ angular.module('dgRedmine').provider('redmine', [
 				}
 
 
-				$localForage.getItem('sisupport')
+				$localForage.getItem('redmineUser')
 					.then(function(data){
 						var user = data.user;
 
@@ -99,7 +99,7 @@ angular.module('dgRedmine').provider('redmine', [
  						}
                     })
 						.then(function(res){
-							$localForage.setItem('sisupport', res.data)
+							$localForage.setItem('redmineUser', res.data)
 								.then(function(){
 									deferred.resolve(res.data);
 								},function(err){
@@ -117,7 +117,7 @@ angular.module('dgRedmine').provider('redmine', [
 				this.logout = function(){
 					var deferred = $q.defer();
 
-					$localForage.removeItem('sisupport')
+					$localForage.removeItem('redmineUser')
 						.then(function(){
 							deferred.resolve();
 						},function(){

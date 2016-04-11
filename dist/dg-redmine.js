@@ -92,7 +92,7 @@ angular.module('dgRedmine').provider('redmine', [
 					var path = 'users/current.json';
                     var _url = "http://"+self.host+"/"+path;
 					
-                    $http.get({
+                    $http({
                         url:_url,
  						headers:{
  							'Authorization':'Basic '+ window.btoa(username+':'+password)

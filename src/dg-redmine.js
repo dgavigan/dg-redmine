@@ -90,9 +90,14 @@ angular.module('dgRedmine').provider('redmine', [
 					var deferred = $q.defer();
 
 					var path = 'users/current.json';
-					var url = "http://"+username+":"+password+"@"+self.host+"/"+path;
-
-					$http.get(url)
+                    var _url = "http://"+self.host+"/"+path;
+					
+                    $http.get({
+                        url:_url,
+ 						headers:{
+ 							'Authorization':'Basic '+ window.btoa(username+':'+password)
+ 						}
+                    })
 						.then(function(res){
 							$localForage.setItem('sisupport', res.data)
 								.then(function(){
